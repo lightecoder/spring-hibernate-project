@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <title>Registration Page</title>
+    <link rel="stylesheet" th:href="@{../css/admin.css}"/>
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="in18nOverviewClient.js"></script>
+</head>
+<body>
+
+<div class="wrapperUserData">
+
+    <fieldset>
+        <legend align="center" th:text="#{Client}"></legend>
+        <!--            <c:out value="${sessionScope.overviewUser.firstName}-->
+        <!--                                                ${sessionScope.overviewUser.surName}"/></legend>-->
+        <div class="activityInfoForm">
+            <table>
+                <col width="200">
+                <col width="150">
+                <col width="100">
+                <col width="150">
+                <col width="200">
+                <tr>
+                    <th align="left" th:text="#{ACTIVITIES}"></th>
+                    <th align="left" th:text="#{STATUS}"></th>
+                    <th align="left" th:text="#{TIME}"></th>
+                    <th align="center" th:text="#{ACTION}"></th>
+                    <th align="left" th:text="#{NOTICE}"></th>
+                </tr>
+                <!--                <c:forEach items="${sessionScope.trackingList}" var="tracking">-->
+
+                <tr th:each="tracking:${trackingList}">
+                    <!--                    <c:set var="userId" value="${sessionScope.overviewUser.userId}"/>-->
+                    <!--                    <c:if test="${tracking.user.userId==userId}">-->
+                    <!--                <tr>-->
+                    <td>
+                        <span th:text="${tracking.getActivity().getActivityName()}"></span>
+                    </td>
+                    <td>
+                        <span th:text="${tracking.status}"></span>
+                    </td>
+                    <td>
+                        <span th:text="${tracking.time}"></span>
+                    </td>
+                    <!--                    <td>-->
+                    <!--                        <c:set var="status" value="${tracking.userRequest}"/>-->
+                    <!--                        <c:if test="${status=='REMOVE'}">-->
+                    <!--                            <form class="formElement" name="actionForm" method="POST"-->
+                    <!--                                  action="admin">-->
+                    <!--                                <input type="hidden" name="trackingId" value="${tracking.trackingId}"/>-->
+                    <!--                                <input type="hidden" name="userId" value="${tracking.user.userId}"/>-->
+                    <!--                                <input type="hidden" name="command" value="removeAdmin"/>-->
+                    <!--                                <input class="buttonElement" type="submit" value="<fmt:message key=" remove"/>"/>-->
+                    <!--                            </form>-->
+                    <!--                        </c:if>-->
+                    <!--                    </td>-->
+                    <!--                    <td>-->
+                    <!--                        <c:set var="request" value="${tracking.userRequest}"/>-->
+                    <!--                        <c:if test="${request=='REMOVE'}">-->
+                    <!--                            <fmt:message key="response"/>-->
+                    <!--                        </c:if>-->
+                    <!--                    </td>-->
+                </tr>
+                <!--                    </c:if>-->
+            </table>
+        </div>
+    </fieldset>
+    <div class="wrapperTableActivity">
+        <fieldset>
+            <legend align="center">
+                <span th:text="#{AVAILABLE_ACTIVITIES}"></span>
+            </legend>
+            <div class="activityInfoForm">
+                <table style=width:330px>
+                    <col width="100">
+                    <!--                    <c:forEach items="${sessionScope.activityAdminList}" var="activity">-->
+                    <tr th:each="activity:${activityList}">
+
+                        <td>
+                            <span th:text="${activity.activityName}"></span>
+                        </td>
+                    </tr>
+                    <!--                    </c:forEach>-->
+
+                </table>
+                <table style=width:330px>
+                    <tr>
+                        <td>
+                            <div>
+                                <!--                                <c:if test="${requestScope.operationMessage!= null}">-->
+                                <!--                                    <fmt:message key="${requestScope.operationMessage}"/>-->
+                                <!--                                </c:if>-->
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </fieldset>
+    </div>
+</div>
+
+<!--BACK-->
+<div class="backElement">
+    <button type="button"><a href="/internationalAdmin"><span th:text="#{Back}"></span></a></button>
+</div>
+
+<!--LANGUAGE-->
+<div class="languageElement" style="position:fixed; right:20px; top:10px;">
+    <span class="lan" th:text="#{lang.change}"></span>:
+    <select id="locales">
+        <option value=""></option>
+        <option value="en" th:text="#{lang.eng}"></option>
+        <option value="ru" th:text="#{lang.ru}"></option>
+    </select>
+</div>
+</body>
+</html>

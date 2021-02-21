@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Login Page</title>
+    <link rel="stylesheet" th:href="@{../css/user.css}"/>
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="in18nUser.js"></script>
+    <!--    <script src="time.js"></script>-->
+</head>
+<body>
+<div class="wrapperWelcomeInfo">
+    <div class="welcomeElement" th:object="${user}">
+        <span th:text="#{welcome}"> </span>
+        <span th:text="#{user}"></span>
+        <span th:text="${user.getFirstName()}"> </span>
+        <span th:text="${user.getSurName()}"></span>
+    </div>
+</div>
+<div class="wrapperPageData">
+    <fieldset>
+        <legend align="center">
+            <span th:text="#{tracking_title}"></span>
+        </legend>
+        <div class="activityInfoForm">
+            <table>
+                <tr>
+                    <th align="left" width="320">
+                        <span th:text="#{ACTIVITIES}"></span>
+                    </th>
+                    <th align="left" width="150">
+                        <span th:text="#{STATUS}"></span>
+                    </th>
+                    <th>
+                        <span th:text="#{ACTION}"></span>
+                    </th>
+                    <th align="left" width="100">
+                        <span th:text="#{TIME}"></span>
+                    </th>
+                    <th align="left" width="300">
+                        <span th:text="#{NOTICE}"></span>
+                    </th>
+                </tr>
+                <tr th:each="tracking:${trackingList}" th:with="userId=${user.getId()}">
+                    <td>
+                        <span th:text="${tracking.getActivity().getActivityName()}"></span>
+                    </td>
+                    <td>
+                        <span th:text="#{${tracking.getStatus().getName()}}"></span>
+                    </td>
+                    <td>
+                        <table>
+                            <tr>
+                                <td>
+                                    <form class="formElement" method="POST" th:action="@{/startTime}">
+                                        <div class="wrapperButtons">
+                                            <button class="buttonElement" type="submit"
+                                                    th:text="#{start}"></button>
+                                        </div>
+                                    </form>
+                                </td>
+                                <td>
+                                    <form class="formElement" method="POST" th:action="@{/stopTime}">
+                                        <div class="wrapperButtons">
+                                            <button class="buttonElement" type="submit" th:text="#{stop}"></button>
+                                        </div>
+                                    </form>
+                                </td>
+                                <td align="center">
+                                    <form class="formElement" method="POST" th:action="@{/finishTime}">
+                                        <div class="wrapperButtons">
+                                            <button class="buttonElement" type="submit" th:text="#{finish}"></button>
+                                        </div>
+                                    </form>
+                                </td>
+                                <td align="center">
+                                    <span th:if="${tracking.status == 'FINISHED'}">
+                                        <form class="formElement" method="POST" th:action="@{/removeActivity}">
+                                            <div class="wrapperButtons">
+                                               <button class="buttonElement" type="submit"
+                                                       th:text="#{remove}"></button>
+                                            </div>
+                                        </form>
+                                    </span>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td>
+                        <span th:if="${tracking.timeSwitch == 'true'}">
+                            <span id="time" th:text="${tracking.getDifferenceTime()}">
+                                <script type="text/javascript">
+                                    // var countMinutes = round(parseInt(
+                                    //     document.getElementById("time").innerHTML
+                                    // )/1000)/60%60;
+                                    // var countHours = round(parseInt(
+                                    //     document.getElementById("time").innerHTML
+                                    // )/1000)/60/60%60;
+                                </script>
+                            </span>
+                                <span id="hours"></span>:<label id="minutes"></label>:<label
+                                id="seconds"></label>
+                        </span>
+                           <span th:unless="${tracking.timeSwitch == 'true'}">
+                                  <span th:text="${tracking.getTime()}"></span>
+                           </span>
+                    </td>
+                    <td>
+                        <span th:with="request=${tracking.getUserRequest()}">
+                             <span th:if="${request=='REMOVE'}">
+                                 <span th:text="#{approval}"></span>
+                             </span>
+                        </span>
+                    </td>
+                </tr>
+            </table>
+            <table>
+                <tr>
+                    <td>
+                        <form method="POST" th:action="@{/addActivity}">
+                            <button class="buttonElement" type="submit" style="height:20px; width:150px"
+                                    th:text="#{add_new_activity}"></button>
+                        </form>
+                    </td>
+                    <td>
+                        <span th:each="tracking:${trackingList}">
+                                <span th:if="${tracking.getUserRequest()=='add'}">
+                                      <span th:text="#{wait_admin}"></span>
+                                </span>
+                        </span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </fieldset>
+</div>
+<!--LOGOUT-->
+<div class="logoutElement" style="position:fixed; right:230px; top:12px;">
+    <form name="logout" method="POST" action="controller">
+        <input type="hidden" name="command" value="logout"/>
+        <button type="button"><a href="/"><span th:text="#{log.out}"></span></a></button>
+    </form>
+</div>
+<!--LANGUAGE-->
+<div class="languageElement" style="position:fixed; right:20px; top:10px;">
+    <span class=lan th:text="#{lang.change}"></span>:
+    <select id="locales">
+        <option value=""></option>
+        <option value="en" th:text="#{lang.eng}"></option>
+        <option value="ru" th:text="#{lang.ru}"></option>
+    </select>
+</div>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Login Page</title>
+    <link rel="stylesheet" th:href="@{../css/login.css}"/>
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="in18nLogin.js"></script>
+</head>
+<body>
+<div style="position:absolute; left:100px; top:200px;">
+    <form method="POST" th:action="@{/user}" th:object="${user}">
+        <div th:if="${#fields.hasErrors()}">
+        <span class="validationError">
+            Incorrect login or password!
+        </span>
+        </div>
+        <fieldset>
+            <legend align="center">
+                <span th:text="#{login_form}"></span>
+            </legend>
+            <table>
+                <tr>
+                    <td><span th:text="#{login}"></span></td>
+                    <td><input class="inputElement" type="text" id=login th:field="*{login}"/></td>
+                    <td><span class="validationError"
+                              th:if="${#fields.hasErrors('login')}"
+                              th:errors="*{login}">Login must be not empty</span></td>
+                </tr>
+                <tr>
+                    <td><span th:text="#{password}"></span></td>
+                    <td><input class="password" type="password" id=password th:field="*{password}"/></td>
+                    <td><span class="validationError"
+                              th:if="${#fields.hasErrors('password')}"
+                              th:errors="*{password}">Password must be not empty</span></td>
+                </tr>
+            </table>
+            <button type="submit" th:text="#{log_in}"></button>
+            <button type="button"><a href="/registration">
+                <span th:text="#{registration}"></span>
+            </a></button>
+        </fieldset>
+    </form>
+</div>
+<!--LANGUAGE-->
+<div class="languageElement" style="position:fixed; right:20px; top:10px;">
+    <span class=lan th:text="#{lang.change}"></span>:
+    <select id="locales">
+        <option value=""></option>
+        <option value="en" th:text="#{lang.eng}"></option>
+        <option value="ru" th:text="#{lang.ru}"></option>
+    </select>
+</div>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <title>Login Page</title>
+    <link rel="stylesheet" th:href="@{../css/admin.css}"/>
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="in18nAdmin.js"></script>
+</head>
+<body>
+<div class="wrapperWelcomeInfo">
+    <div class="welcomeElement">
+        <span th:text="#{welcome_admin}"></span>
+    </div>
+</div>
+<div class="wrapperPageData">
+    <fieldset>
+        <span th:text="#{overview_activity_table}"></span>
+        <div class="activityInfoForm">
+            <table>
+                <col width="180">
+                <col width="100">
+                <col width="200">
+                <col width="230">
+                <tr>
+                    <th align="left"><span th:text="#{USERS}"></span></th>
+                    <th><span th:text="#{ACTIVITIES}"></span></th>
+                    <th><span th:text="#{REQUEST_FROM_CLIENT}"></span></th>
+                    <th align="left"><span th:text="#{NOTICE}"></span></th>
+                </tr>
+                <tr th:each="user:${userList}">
+                    <td>
+                        <span th:text="${user.getFirstName()}"></span>
+                    </td>
+                    <td>
+                        <form class="formElement" method="POST" th:action="@{/overviewClient}">
+                            <div class="wrapperButtons">
+                                <button class="buttonElement" type="submit"
+                                        th:text="#{overview}"></button>
+                            </div>
+                        </form>
+                    </td>
+
+                    <td>
+                        <table>
+                            <tr>
+                                <td>
+                                    <button class="mockButton blue" type="submit"
+                                            th:text="#{add_new_activity}"></button>
+                                </td>
+                                <td>
+                                    <button class="mockButton red" type="submit"
+                                            th:text="#{remove_finished_activity}"></button>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+            </table>
+
+            <!--PAGINATION-->
+
+<!--            <table align="center">-->
+<!--                <tr>-->
+<!--                    <td>-->
+<!--                        <div class="pagination">-->
+<!--                            <th:if test="${sessionScope.currentPage>'1'}">-->
+<!--                                <th:set var="count" value="${sessionScope.currentPage - 1}" scope="page"/>-->
+<!--                                <a href="controller?command=chosePage&currentPage=${count}">&laquo;</a>-->
+<!--                            </th:if>-->
+<!--                            <th:each items="${sessionScope.numbersPages}" var="page">-->
+<!--                                <th:choose>-->
+<!--                                    <th:when test="${page == sessionScope.currentPage}">-->
+<!--                                        <a href="controller?command=chosePage&currentPage=${page}" class="active">-->
+<!--                                            <th:out value="${page}"/>-->
+<!--                                        </a>-->
+<!--                                    </th:when>-->
+<!--                                    <th:otherwise>-->
+<!--                                        <a href="controller?command=chosePage&currentPage=${page}">-->
+<!--                                            <th:out value="${page}"/>-->
+<!--                                        </a>-->
+<!--                                    </th:otherwise>-->
+<!--                                </th:choose>-->
+<!--                            </th:each>-->
+<!--                            <th:if test="${sessionScope.currentPage<sessionScope.lastPage}">-->
+<!--                                <th:set var="count" value="${sessionScope.currentPage + 1}" scope="page"/>-->
+<!--                                <a href="controller?command=chosePage&currentPage=${count}">&raquo;</a>-->
+<!--                            </th:if>-->
+<!--                        </div>-->
+<!--                    </td>-->
+<!--                </tr>-->
+<!--            </table>-->
+        </div>
+    </fieldset>
+    <div class="wrapperTableActivityAdmin">
+        <fieldset>
+            <legend align="center">
+                <span th:text="#{AVAILABLE_ACTIVITIES}"></span>
+            </legend>
+            <div class="activityInfoForm">
+                <table style=width:250px>
+                    <col width="100">
+                    <tr>
+                        <td width="250" align="left">
+                            <form class="formElement" method="POST" th:action="@{/createActivity}"
+                                  th:object="${activity}">
+                                <div class="wrapperButtons">
+                                    <button class="buttonElement" style="height:20px; width:150px" type="submit"
+                                            th:text="#{add_activity}"></button>
+                                    <input class="inputElement" type="text" id=activity th:field="*{activityName}"/>
+                                </div>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr th:each="activity:${activityList}">
+                        <td>
+                            <span th:text="${activity.activityName}"></span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </fieldset>
+    </div>
+</div>
+
+<!--LOGOUT-->
+<div class="logoutElement" style="position:fixed; right:230px; top:12px;">
+    <form name="logout" method="POST" action="controller">
+        <input type="hidden" name="command" value="logout"/>
+        <button type="button"><a href="/"><span th:text="#{log.out}"></span></a></button>
+    </form>
+</div>
+<!--LANGUAGE-->
+<div class="languageElement" style="position:fixed; right:20px; top:10px;">
+    <span class=lan th:text="#{lang.change}"></span>:
+    <select id="locales">
+        <option value=""></option>
+        <option value="en" th:text="#{lang.eng}"></option>
+        <option value="ru" th:text="#{lang.ru}"></option>
+    </select>
+</div>
+</body>
+</html>
