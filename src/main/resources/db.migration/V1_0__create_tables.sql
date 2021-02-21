@@ -51,8 +51,3 @@ CREATE TABLE tracking
     FOREIGN KEY (status_id) REFERENCES status (id),
     FOREIGN KEY (user_request_id) REFERENCES user_request (id)
 );
-
-# CREATE TABLE hibernate_sequence
-# (
-#     next_val BIGINT null
-# );
